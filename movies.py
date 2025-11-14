@@ -1,6 +1,8 @@
 import requests
 import json
 import random
+from dotenv import load_dotenv 
+import os
 
 movie_genres_dict = {
     28: "Action",
@@ -43,13 +45,18 @@ TV_genres_dict = {
     37: "Western"
 }
 
+# load API key from .env file
+load_dotenv() 
+API_KEY = os.getenv("TMDB_API")
+print(API_KEY)
+
 def get_movie_rec_list(user_selected_genre, random_page=1):
     # print("random page", random_page)
     movie_url = "https://api.themoviedb.org/3/discover/movie?include_adult=true&include_video=false&language=en-US&page="+ str(random_page) +"&sort_by=vote_count.desc.desc&with_genres=" + str(user_selected_genre)
     # print(movie_url)
     headers = {
         "accept": "application/json",
-        "Authorization": "Bearer <API KEY>"
+        "Authorization": "Bearer " + API_KEY
     }
     response = requests.get(movie_url, headers=headers)
     return response
@@ -87,5 +94,6 @@ def main():
     results, total_pages = json_parse(response)
     recommendation = select_from_list(results, total_pages, user_selected_genre)
     print("recommendation:", recommendation)
+    print("to find where to watch it, use https://watchany.stream/")
 
 main()
