@@ -61,6 +61,16 @@ def get_movie_rec_list(user_selected_genre, random_page=1):
     response = requests.get(movie_url, headers=headers)
     return response
 
+def get_TV_rec_list(user_selected_genre, random_page=1):
+    # print("random page", random_page)
+    movie_url = "https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc"+ str(random_page) +"&sort_by=vote_count.desc.desc&with_genres=" + str(user_selected_genre)
+    # print(movie_url)
+    headers = {
+        "accept": "application/json",
+        "Authorization": "Bearer " + API_KEY
+    }
+    response = requests.get(movie_url, headers=headers)
+    return response
 
 def json_parse(response):
     data = response.json()
